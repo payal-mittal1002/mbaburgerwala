@@ -95,7 +95,7 @@ const schema= new mongoose.Schema({
         enum:["Preparing","Shipped","Delivered"],
         default:"Preparing",
     },
-    delivedredAt:Date,
+    deliveredAt:Date,
     createdAt:{
         type:Date,
         default:Date.now,

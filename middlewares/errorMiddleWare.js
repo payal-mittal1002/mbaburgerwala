@@ -1,5 +1,4 @@
  export const  errorMiddleWare=((err,req,res,next)=>{
-    console.log(err);
     err.message=err.message||"Internal server error"
    
     err.statusCode=err.statusCode||500;

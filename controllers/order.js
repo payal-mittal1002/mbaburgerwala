@@ -82,11 +82,11 @@ export const paymentVerification=(asyncError(async(req,res,next)=>{
 const {razorpay_payment_id,razorpay_order_id,razorpay_signature,orderOptions}=req.body;
 const body=razorpay_order_id + "|" + razorpay_payment_id;
 const expectedSignature=crypto.createHmac("sha256",process.env.RAZORPAY_API_SECRET).update(body).digest("hex");
-const isauthentic=razorpay_signature===expectedSignature;
-if(isauthentic){
+const isAuthentic=razorpay_signature===expectedSignature;
+if(isAuthentic){
 const payment=await Payment.create({
-    razorpay_payment_id,
     razorpay_order_id,
+    razorpay_payment_id,  
     razorpay_signature,
     
 })
@@ -97,7 +97,7 @@ await Order.create({
 })
 res.status(201).json({
     success:true,
-    message:`Order Placed Successfully . Payment Id:${paymant._id}`
+    message:`Order Placed Successfully . Payment Id:${payment._id}`
 })
 }
 else{
@@ -151,7 +151,7 @@ export const processOrder=asyncError(async(req,res,next)=>{
     else if(order.orderStatus==="Delivered"){
         return next(new ErrorHandler("Food Already Delivered",400))
     }
-    order.save();
+    await order.save();
     res.status(200).json({
         success:true,
         message:"Status Updated Successfully"
